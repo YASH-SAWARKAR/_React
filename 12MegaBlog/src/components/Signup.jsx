@@ -2,23 +2,22 @@ import React, { useState } from "react";
 import authService from "../appwrite/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../store/authSlice";
-import { Button, Input, Logo } from "./index";
+import { Button, Input, Logo } from "./index.js";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 
 function Signup() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
 
   const create = async (data) => {
     setError("");
-
     try {
       const userData = await authService.createAccount(data);
       if (userData) {
-        await authService.getCurrentUser();
+        const userData = await authService.getCurrentUser();
         if (userData) dispatch(login(userData));
         navigate("/");
       }
@@ -50,16 +49,16 @@ function Signup() {
           </Link>
         </p>
         {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
+
         <form onSubmit={handleSubmit(create)}>
           <div className="space-y-5">
             <Input
-              label="Full Name"
-              placeholder="Enter your name"
+              label="Full Name: "
+              placeholder="Enter your full name"
               {...register("name", {
                 required: true,
               })}
             />
-
             <Input
               label="Email: "
               placeholder="Enter your email"
@@ -74,9 +73,12 @@ function Signup() {
               })}
             />
             <Input
-              label="password"
-              placeholder="Enter password"
-              {...register("password", { required: true })}
+              label="Password: "
+              type="password"
+              placeholder="Enter your password"
+              {...register("password", {
+                required: true,
+              })}
             />
             <Button type="submit" className="w-full">
               Create Account

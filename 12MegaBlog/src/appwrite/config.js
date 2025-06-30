@@ -1,4 +1,4 @@
-import conf from "../conf/conf";
+import conf from "../conf/conf.js";
 import { Client, ID, Databases, Storage, Query } from "appwrite";
 
 export class Service {
@@ -90,6 +90,7 @@ export class Service {
       return false;
     }
   }
+
   // file upload service
 
   async uploadFile(file) {
@@ -108,6 +109,7 @@ export class Service {
   async deleteFile(fileId) {
     try {
       await this.bucket.deleteFile(conf.appwriteBucketId, fileId);
+      return true;
     } catch (error) {
       console.log("Appwrite serive :: deleteFile :: error", error);
       return false;
@@ -120,5 +122,4 @@ export class Service {
 }
 
 const service = new Service();
-
 export default service;

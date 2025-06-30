@@ -1,14 +1,14 @@
-import conf from "../conf/conf";
+import conf from "../conf/conf.js";
 import { Client, Account, ID } from "appwrite";
 
 export class AuthService {
   client = new Client();
   account;
-  consturctor() {
+
+  constructor() {
     this.client
       .setEndpoint(conf.appwriteUrl)
       .setProject(conf.appwriteProjectId);
-
     this.account = new Account(this.client);
   }
 
@@ -21,7 +21,7 @@ export class AuthService {
         name
       );
       if (userAccount) {
-        return; //call another method;
+        // call another method
         return this.login({ email, password });
       } else {
         return userAccount;
@@ -33,7 +33,7 @@ export class AuthService {
 
   async login({ email, password }) {
     try {
-      return await this.createEmailSession(email, password);
+      return await this.account.createEmailPasswordSession(email, password);
     } catch (error) {
       throw error;
     }
